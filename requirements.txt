@@ -1,0 +1,11 @@
+google-api-python-client
+vaderSentiment
+textblob
+pandas
+matplotlib
+wordcloud
+streamlit
+nltk
+plotly
+streamlit-lottie
+requests
