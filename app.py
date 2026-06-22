@@ -13,10 +13,8 @@ import matplotlib.pyplot as plt
 import base64
 import os
 
-# Page Config
 st.set_page_config(page_title="Sentify | YouTube Intelligence", layout="wide", initial_sidebar_state="collapsed")
 
-# Custom CSS for Premium Professional Look
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
@@ -177,7 +175,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Custom Header
 st.markdown("""
     <div class="floating-header">
         <h1 style="font-size: 3.5rem; margin-bottom: 0;">SENTIFY</h1>
@@ -185,21 +182,18 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Sidebar for API Key
 with st.sidebar:
     st.header("⚙️ Configuration")
     api_key = st.text_input("YouTube API Key", type="password")
     st.markdown("---")
     st.info("Provide your YouTube Data API Key to analyze video comments. Your key is processed securely and never stored.")
 
-# Main Input
 col_input, col_btn = st.columns([4, 1])
 with col_input:
     video_url = st.text_input("Enter YouTube Video URL or ID", placeholder="Enter YouTube Video URL or ID (e.g., https://www.youtube.com/watch?v=...)", label_visibility="collapsed")
 with col_btn:
     analyze_btn = st.button("Analyze Sentiment", type="primary", use_container_width=True)
 
-# Initialize session state variables
 if 'comments_df' not in st.session_state:
     st.session_state.comments_df = pd.DataFrame()
 if 'next_page_token' not in st.session_state:
@@ -236,8 +230,6 @@ if analyze_btn:
             except Exception as e:
                  st.error(f"An unexpected error occurred: {str(e)}")
 
-# Add a "Load More" button outside of the analyze_btn condition
-# so it appears when there is data and a next page token.
 if st.session_state.current_video_id and st.session_state.next_page_token:
     if st.button("Load Next Page of Comments"):
         with st.spinner("Fetching next page..."):
@@ -256,18 +248,15 @@ if st.session_state.current_video_id and st.session_state.next_page_token:
             except Exception as e:
                 st.error(f"An unexpected error occurred while loading next page: {str(e)}")
 
-# If we have data, we display it
 if not st.session_state.comments_df.empty:
     df = st.session_state.comments_df.copy()
     
-    # Preprocess for WordCloud (cleaned)
     df['cleaned_text'] = df['text'].apply(clean_text)
     
     with st.spinner("Analyzing sentiment..."):
         analyzer = SentimentAnalyzer()
         df = analyzer.perform_analysis(df)
 
-    # Dashboard Metrics
     st.markdown('<h2 style="text-align:center; font-weight:700; margin-bottom: 25px;">📊 Audience Sentiment Overview</h2>', unsafe_allow_html=True)
     
     sentiment_counts = df['sentiment'].value_counts()

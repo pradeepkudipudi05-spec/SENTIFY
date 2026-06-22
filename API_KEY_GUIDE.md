@@ -29,4 +29,3 @@ To run this application, you need a YouTube Data API v3 key. Follow these steps 
    ```
 2. Paste the copied API Key into the sidebar input field when the app opens.
 
-> **Note:** This key is private. Do not share it publicly or commit it to GitHub.

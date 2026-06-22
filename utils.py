@@ -2,7 +2,6 @@ import re
 import string
 from urllib.parse import urlparse, parse_qs
 
-# Simple stopword list to avoid NLTK dependency issues for this specific task
 STOPWORDS = set([
     'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 
     'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 
@@ -31,7 +30,6 @@ def extract_video_id(url):
     if not url:
         return None
     
-    # Handle pure ID input
     if len(url) == 11 and ' ' not in url and '/' not in url:
         return url
 
@@ -62,13 +60,8 @@ def clean_text(text):
     # Convert to lowercase
     text = text.lower()
     
-    # Method to remove emojis (simple regex for non-ascii might be too aggressive, 
-    # but covers most emojis and special chars)
-    # Keeping it simple: remove non-alphanumeric characters except spaces
-    # This effectively removes emojis and punctuation
     text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
     
-    # Remove extra spaces
     text = re.sub(r'\s+', ' ', text).strip()
     
     # Remove stopwords
